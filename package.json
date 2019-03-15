@@ -8,8 +8,8 @@
     "url": "none"
   },
   "scripts": {
-    "dev": "webpack --mode development --watch ./noted/frontend/src/index.js --output ./noted/frontend/static/frontend/main.js",
-    "build": "webpack --mode production ./noted/frontend/src/index.js --output ./noted/frontend/static/frontend/main.js"
+    "dev": "webpack --mode development --watch ./noteman/frontend/src/index.js --output ./noteman/frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./noteman/frontend/src/index.js --output ./noteman/frontend/static/frontend/main.js"
   },
   "keywords": ["react", "redux"],
   "author": "Jonathan Rozario",
