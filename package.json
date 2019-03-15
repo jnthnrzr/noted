@@ -8,11 +8,12 @@
     "url": "none"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack --mode development --watch ./noted/frontend/src/index.js --output ./noted/frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./noted/frontend/src/index.js --output ./noted/frontend/static/frontend/main.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["react", "redux"],
+  "author": "Jonathan Rozario",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
