@@ -5,10 +5,10 @@ import Dashboard from './notes/Dashboard';
 class App extends Component {
   render() {
     return (
-        <Fragment>
-          <Header />
-          <Dashboard />
-        </Fragment>
+      <Fragment>
+        <Header />
+        <Dashboard />
+      </Fragment>
     );
   }
 }

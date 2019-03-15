@@ -11,7 +11,10 @@
     "dev": "webpack --mode development --watch ./noteman/frontend/src/index.js --output ./noteman/frontend/static/frontend/main.js",
     "build": "webpack --mode production ./noteman/frontend/src/index.js --output ./noteman/frontend/static/frontend/main.js"
   },
-  "keywords": ["react", "redux"],
+  "keywords": [
+    "react",
+    "redux"
+  ],
   "author": "Jonathan Rozario",
   "license": "MIT",
   "devDependencies": {
@@ -26,6 +29,11 @@
   "dependencies": {
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.4.0",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
   }
 }

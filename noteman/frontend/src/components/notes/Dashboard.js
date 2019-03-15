@@ -4,10 +4,10 @@ import Notes from './Notes';
 
 function Dashboard() {
   return (
-      <Fragment>
-        <Form />
-        <Notes />
-      </Fragment>
+    <Fragment>
+      <Form />
+      <Notes />
+    </Fragment>
   );
 }
 
