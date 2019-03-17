@@ -12,7 +12,7 @@ class NoteViewSet(viewsets.ModelViewSet):
   serializer_class = NoteSerializer
 
   def get_queryset(self):
-    return self.request.user.leads.all()
+    return self.request.user.notes.all()
 
   def perform_create(self, serializer):
     serializer.save(owner=self.request.user)
