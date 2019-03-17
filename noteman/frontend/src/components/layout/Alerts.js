@@ -22,9 +22,9 @@ export class Alerts extends Component {
       status: PropTypes.number,
     }),
     message: PropTypes.shape({
-      deleteNote: PropTypes.func,
-      addNote: PropTypes.func,
-      passwordsNotMatch: PropTypes.func,
+      deleteNote: PropTypes.string,
+      addNote: PropTypes.string,
+      passwordsNotMatch: PropTypes.string,
     }),
     alert: PropTypes.shape({
       error: PropTypes.func,
