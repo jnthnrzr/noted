@@ -3,6 +3,11 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getNotes, deleteNote } from "../../actions/notesActions";
 
+const dateString = (unixTimeStamp) => {
+  const date = new Date(unixTimeStamp);
+  return date.toDateString();
+};
+
 class Notes extends Component {
   static propTypes = {
     notes: PropTypes.arrayOf(
@@ -30,34 +35,34 @@ class Notes extends Component {
         <h2>Notes</h2>
         <table className="table table-striped">
           <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Body</th>
-            <th>Created at</th>
-            <th>Modified at</th>
-            <th />
-          </tr>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Body</th>
+              <th>Created at</th>
+              <th>Modified at</th>
+              <th />
+            </tr>
           </thead>
           <tbody>
-          {notes.map(note => (
-            <tr key={note.id}>
-              <td>{note.id}</td>
-              <td>{note.title}</td>
-              <td>{note.body}</td>
-              <td>{note.created_at}</td>
-              <td>{note.modified_at}</td>
-              <td>
-                <button
-                  type="button"
-                  onClick={deleteNote.bind(this, note.id)}
-                  className="btn btn-danger btn-sm"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+            {notes.map(note => (
+              <tr key={note.id}>
+                <td>{note.id}</td>
+                <td>{note.title}</td>
+                <td>{note.body}</td>
+                <td>{dateString(note.created_at)}</td>
+                <td>{dateString(note.modified_at)}</td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={deleteNote.bind(this, note.id)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </Fragment>
