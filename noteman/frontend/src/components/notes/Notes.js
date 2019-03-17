@@ -30,41 +30,44 @@ class Notes extends Component {
 
   render() {
     const { notes, deleteNote } = this.props;
+    const cardStyle = {
+      maxWidth: "20rem",
+    };
     return (
       <Fragment>
         <h2>Notes</h2>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Body</th>
-              <th>Created at</th>
-              <th>Modified at</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {notes.map(note => (
-              <tr key={note.id}>
-                <td>{note.id}</td>
-                <td>{note.title}</td>
-                <td>{note.body}</td>
-                <td>{dateString(note.created_at)}</td>
-                <td>{dateString(note.modified_at)}</td>
-                <td>
-                  <button
-                    type="button"
-                    onClick={deleteNote.bind(this, note.id)}
-                    className="btn btn-danger btn-sm"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {notes.map(note => (
+          <div className="card border-secondary mb-3" key={note.id} style={cardStyle}>
+            <h5 className="card-header">{note.title}</h5>
+            <div className="card-body">
+              <p className="card-text">{note.body}</p>
+            </div>
+            <div className="card-footer text-muted">
+              <button
+                type="button"
+                onClick={deleteNote.bind(this, note.id)}
+                className="card-link btn btn-info btn-sm"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={deleteNote.bind(this, note.id)}
+                className="card-link btn btn-danger btn-sm"
+              >
+                Delete
+              </button>
+              <span className="badge badge-light">
+                {"Created: "}
+                {dateString(note.created_at)}
+              </span>
+              <span className="badge badge-light">
+                {"Modified: "}
+                {dateString(note.modified_at)}
+              </span>
+            </div>
+          </div>
+        ))}
       </Fragment>
     );
   }
