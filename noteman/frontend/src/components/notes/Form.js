@@ -35,29 +35,41 @@ class Form extends Component {
 
   render() {
     const { title, body } = this.state;
+    const labelStyle = {
+      width: "100%",
+    };
+
+    const inputStyle = {
+      border: "none",
+    };
 
     return (
       <div className="card card-body mt-4 mb-4">
         <h2>Add Note</h2>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label>Title</label>
-            <input
-              className="form-control"
-              type="text"
-              name="title"
-              onChange={this.onChange}
-              value={title}
-            />
+            <label htmlFor="title" style={labelStyle}>
+              <input
+                className="form-control"
+                style={inputStyle}
+                type="text"
+                name="title"
+                placeholder="Title"
+                onChange={this.onChange}
+                value={title}
+              />
+            </label>
           </div>
           <div className="form-group">
-            <label>Body</label>
-            <textarea
-              className="form-control"
-              name="body"
-              onChange={this.onChange}
-              value={body}
-            />
+            <label htmlFor="body">
+              <textarea
+                className="form-control"
+                name="body"
+                placeholder="Text"
+                onChange={this.onChange}
+                value={body}
+              />
+            </label>
           </div>
           <div className="form-group">
             <button type="submit" className="btn btn-primary">

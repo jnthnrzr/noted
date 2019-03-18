@@ -31,7 +31,7 @@ class Header extends Component {
           <button
             type="button"
             onClick={logoutUser}
-            className="nav-link btn btn-info btn-sm text-light"
+            className="nav-link btn btn-danger btn-md text-light"
           >
             Logout
           </button>

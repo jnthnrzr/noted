@@ -2,21 +2,42 @@ import axios from "axios";
 import { createMessage, returnErrors } from "./messagesActions";
 import { tokenConfig } from "./authActions";
 
-import { GET_NOTES, DELETE_NOTE, ADD_NOTE } from "./types";
+import { ADD_NOTE, DELETE_NOTE, GET_NOTES, TOGGLE_EDIT, UPDATE_NOTE } from "./types";
 
 // GET NOTES
 export const getNotes = () => (dispatch, getState) => {
   axios
     .get("/api/notes/", tokenConfig(getState))
     .then(res => {
+      const { data } = res;
+      const payload = data.map(note => (
+        { ...note, editing: false }
+        )
+      );
       dispatch({
         type: GET_NOTES,
-        payload: res.data
+        payload: payload,
       });
     })
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))
     );
+};
+
+// TOGGLE EDIT FOR SPECIFIC NOTE
+export const toggleEdit = id => dispatch => {
+  dispatch({
+    type: TOGGLE_EDIT,
+    payload: id,
+  });
+};
+
+// UPDATE NOTE
+export const updateNote = note => (dispatch, getState) => {
+  dispatch({
+    type: UPDATE_NOTE,
+    payload: note,
+  });
 };
 
 // DELETE NOTE
