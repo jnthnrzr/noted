@@ -43,6 +43,12 @@ class Form extends Component {
       border: "none",
     };
 
+    const textareaStyle = {
+      resize: "none",
+      outline: "none",
+      border: "none",
+    };
+
     return (
       <div className="card card-body mt-4 mb-4">
         <h2>Add Note</h2>
@@ -61,8 +67,9 @@ class Form extends Component {
             </label>
           </div>
           <div className="form-group">
-            <label htmlFor="body">
+            <label htmlFor="body" style={labelStyle}>
               <textarea
+                style={textareaStyle}
                 className="form-control"
                 name="body"
                 placeholder="Text"

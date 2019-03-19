@@ -68,7 +68,8 @@ class Notes extends Component {
       width: "100%",
       border: "none",
       background: "inherit",
-      resize: ""
+      resize: "none",
+      outline: "none",
     };
 
     const editingCard = note => (
