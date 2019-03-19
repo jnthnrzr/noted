@@ -78,8 +78,8 @@ class Form extends Component {
               />
             </label>
           </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
+          <div className="form-group d-flex justify-content-end">
+            <button type="submit" className="btn btn-success">
               Submit
             </button>
           </div>
