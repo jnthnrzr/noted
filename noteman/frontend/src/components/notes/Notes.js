@@ -1,8 +1,25 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { deleteNote, getNotes, toggleEdit, updateNote } from "../../actions/notesActions";
-import EditableNote from './EditableNote';
+
+const labelStyle = {
+  width: "100%",
+};
+
+const inputStyle = {
+  border: "none",
+  width: "100%",
+  background: "inherit",
+};
+
+const textareaStyle = {
+  width: "100%",
+  border: "none",
+  background: "inherit",
+  resize: "none",
+  outline: "none",
+};
 
 const dateString = (unixTimeStamp) => {
   const date = new Date(unixTimeStamp);
@@ -10,6 +27,15 @@ const dateString = (unixTimeStamp) => {
 };
 
 class Notes extends Component {
+  state = {
+    title: "",
+    body: "",
+  };
+
+  static defaultProps = {
+    notes: [],
+  };
+
   static propTypes = {
     notes: PropTypes.arrayOf(
       PropTypes.shape({
@@ -19,12 +45,11 @@ class Notes extends Component {
         body: PropTypes.string,
         created_at: PropTypes.string,
         modified_at: PropTypes.string,
-      })
-    ).isRequired,
-    getNotes: PropTypes.func.isRequired,
+      })),
     deleteNote: PropTypes.func.isRequired,
     updateNote: PropTypes.func.isRequired,
     toggleEdit: PropTypes.func.isRequired,
+    getNotes: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -32,28 +57,114 @@ class Notes extends Component {
     getNotes();
   }
 
-  render() {
-    const { notes, deleteNote, updateNote, toggleEdit } = this.props;
+  onChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
 
-    // const handleSubmit = event => {
-    //   event.preventDefault();
-    //   const id = Number(event.target.id.value);
-    //   const owner = Number(event.target.owner.value);
-    //   const title = event.target.title.value;
-    //   const body = event.target.body.value;
-    //   const modified_at = new Date().toISOString();
-    //   const created_at = event.target.created_at.value;
-    //   const note = { id, title, body, modified_at, created_at, owner, "editing": false };
-    //   updateNote(note);
-    //
-    // };
-    const cardStyle = {
-      maxWidth: "20rem",
-    };
+  handleEdit = id => {
+    const { toggleEdit } = this.props;
+    toggleEdit(id);
+  };
+
+  handleUpdate = note => {
+    const { title, body } = this.state;
+    const modified_at = new Date().toISOString();
+    // const note = { id, title, body, modified_at };
+
+    const { updateNote } = this.props;
+    updateNote({
+      id: note.id,
+      title: title || note.title,
+      body: body || note.body,
+      modified_at
+    });
+    this.handleEdit(note.id);
+
+    this.setState({
+      title: "",
+      body: "",
+    });
+  };
+
+  handleDelete = id => {
+    const { deleteNote } = this.props;
+    deleteNote(id);
+  };
+
+  render() {
+    const { notes } = this.props;
 
     return (
       <Fragment>
-        {notes.map(note => <EditableNote note={note} key={note.id} />)}
+        {notes.map(note => (
+          <div key={note.id} className="card card-body mt-4 mb-4">
+            <form onSubmit={this.handleUpdate.bind(this, note)}>
+              <div className="form-group">
+                {note.editing ? (
+                  <label htmlFor="title" style={labelStyle}>
+                    <input
+                      className="form-control"
+                      style={inputStyle}
+                      type="text"
+                      name="title"
+                      placeholder="Note Title"
+                      onChange={this.onChange}
+                      defaultValue={note.title}
+                    />
+                  </label>
+                ) : note.title}
+              </div>
+              <div className="form-group">
+                {note.editing ? (
+                  <label htmlFor="body" style={labelStyle}>
+                    <textarea
+                      style={textareaStyle}
+                      className="form-control"
+                      name="body"
+                      placeholder="What's it about?"
+                      onChange={this.onChange}
+                      defaultValue={note.body}
+                    />
+                  </label>
+                ) : note.body}
+              </div>
+              <div className="form-group d-flex justify-content-around align-items-center">
+                <span className="">
+                  {`Created: ${dateString(note.created_at)}`}
+                </span>
+                <span className="">
+                  {`Edited: ${dateString(note.modified_at)}`}
+                </span>
+                {note.editing ? (
+                  <button
+                    onClick={this.handleUpdate.bind(this, note)}
+                    type="button"
+                    className="btn btn-success"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    onClick={this.handleEdit.bind(this, note.id)}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    Edit
+                  </button>
+                )}
+                <button
+                  onClick={this.handleDelete.bind(this, note.id)}
+                  type="button"
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
+              </div>
+            </form>
+          </div>
+        ))}
       </Fragment>
     );
   }
