@@ -34,10 +34,18 @@ export const toggleEdit = id => dispatch => {
 
 // UPDATE NOTE
 export const updateNote = note => (dispatch, getState) => {
-  dispatch({
-    type: UPDATE_NOTE,
-    payload: note,
-  });
+  axios
+    .put(`/api/notes/${note.id}/`, note, tokenConfig(getState))
+    .then(() => {
+      dispatch(createMessage({ updateNote: "Note Updated" }));
+      dispatch({
+        type: UPDATE_NOTE,
+        payload: note,
+      });
+    })
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 // DELETE NOTE

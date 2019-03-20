@@ -15,7 +15,6 @@ const inputStyle = {
 };
 
 const textareaStyle = {
-  overflow: "hidden",
   width: "100%",
   border: "none",
   background: "inherit",
@@ -70,12 +69,20 @@ class EditableNote extends Component {
     toggleEdit(id);
   };
 
-  handleUpdate = id => {
+  handleUpdate = note => {
     const { title, body } = this.state;
     const modified_at = new Date().toISOString();
+    // const note = { id, title, body, modified_at };
+
     const { updateNote } = this.props;
-    const note = { id, title, body, modified_at };
-    updateNote(note);
+    updateNote({
+      id: note.id,
+      title: title || note.title,
+      body: body || note.body,
+      modified_at
+    });
+    this.handleEdit(note.id);
+
     this.setState({
       title: "",
       body: "",
@@ -87,24 +94,14 @@ class EditableNote extends Component {
     deleteNote(id);
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    console.log("handleSubmit");
-    this.setState({
-      title: "",
-      body: "",
-    });
-  };
-
   render() {
     const { notes } = this.props;
-    const { title, body } = this.state;
 
     return (
       <Fragment>
         {notes.map(note => (
           <div key={note.id} className="card card-body mt-4 mb-4">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleUpdate.bind(this, note)}>
               <div className="form-group">
                 {note.editing ? (
                   <label htmlFor="title" style={labelStyle}>
@@ -115,7 +112,7 @@ class EditableNote extends Component {
                       name="title"
                       placeholder="Note Title"
                       onChange={this.onChange}
-                      value={title}
+                      defaultValue={note.title}
                     />
                   </label>
                 ) : note.title}
@@ -129,7 +126,7 @@ class EditableNote extends Component {
                       name="body"
                       placeholder="What's it about?"
                       onChange={this.onChange}
-                      value={body}
+                      defaultValue={note.body}
                     />
                   </label>
                 ) : note.body}
@@ -143,7 +140,7 @@ class EditableNote extends Component {
                 </span>
                 {note.editing ? (
                   <button
-                    onClick={this.handleUpdate.bind(this, note.id)}
+                    onClick={this.handleUpdate.bind(this, note)}
                     type="button"
                     className="btn btn-success"
                   >

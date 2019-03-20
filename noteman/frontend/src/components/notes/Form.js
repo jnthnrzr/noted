@@ -50,8 +50,8 @@ class Form extends Component {
     };
 
     return (
-      <div className="card card-body mt-4 mb-4">
-        <h2>Add Note</h2>
+      <div className="card card-body border-primary mt-4 mb-4">
+        <h4>Add Note</h4>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="title" style={labelStyle}>
@@ -60,7 +60,7 @@ class Form extends Component {
                 style={inputStyle}
                 type="text"
                 name="title"
-                placeholder="Title"
+                placeholder="Enter Title"
                 onChange={this.onChange}
                 value={title}
               />
@@ -72,7 +72,7 @@ class Form extends Component {
                 style={textareaStyle}
                 className="form-control"
                 name="body"
-                placeholder="Text"
+                placeholder="Enter Text"
                 onChange={this.onChange}
                 value={body}
               />

@@ -24,6 +24,7 @@ export class Alerts extends Component {
     message: PropTypes.shape({
       deleteNote: PropTypes.string,
       addNote: PropTypes.string,
+      updateNote: PropTypes.string,
       passwordsNotMatch: PropTypes.string,
     }),
     alert: PropTypes.shape({
@@ -46,6 +47,7 @@ export class Alerts extends Component {
     if (message !== prevProps.message) {
       if (message.deleteNote) alert.success(message.deleteNote);
       if (message.addNote) alert.success(message.addNote);
+      if (message.updateNote) alert.success(message.updateNote);
       if (message.passwordsNotMatch) alert.error(message.passwordsNotMatch);
     }
   }
