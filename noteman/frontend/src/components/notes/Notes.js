@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { deleteNote, getNotes, toggleEdit, updateNote } from "../../actions/notesActions";
 
+const deleteBtnStyle = {
+  margin: "0 1rem",
+};
+
 const labelStyle = {
   width: "100%",
 };
@@ -130,37 +134,39 @@ class Notes extends Component {
                   </label>
                 ) : note.body}
               </div>
-              <div className="form-group d-flex justify-content-around align-items-center">
-                <span className="">
-                  {`Created: ${dateString(note.created_at)}`}
+              <div className="form-group d-flex justify-content-between align-items-center">
+                <span>
+                  <small>
+                    {`Created: ${dateString(note.created_at)}`}
+                  </small>
                 </span>
-                <span className="">
-                  {`Edited: ${dateString(note.modified_at)}`}
-                </span>
-                {note.editing ? (
+                <div style={{width: "50%"}} className="d-flex justify-content-end">
+                  {note.editing ? (
+                    <button
+                      onClick={this.handleUpdate.bind(this, note)}
+                      type="button"
+                      className="btn btn-success"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      onClick={this.handleEdit.bind(this, note.id)}
+                      type="button"
+                      className="btn btn-primary"
+                    >
+                      Edit
+                    </button>
+                  )}
                   <button
-                    onClick={this.handleUpdate.bind(this, note)}
+                    onClick={this.handleDelete.bind(this, note.id)}
                     type="button"
-                    className="btn btn-success"
+                    className="btn btn-danger"
+                    style={deleteBtnStyle}
                   >
-                    Save
+                    Delete
                   </button>
-                ) : (
-                  <button
-                    onClick={this.handleEdit.bind(this, note.id)}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    Edit
-                  </button>
-                )}
-                <button
-                  onClick={this.handleDelete.bind(this, note.id)}
-                  type="button"
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
+                </div>
               </div>
             </form>
           </div>
