@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import Form from './Form';
-import Notes from './Notes';
+import EditableNote from './EditableNote';
 
 function Dashboard() {
   return (
     <Fragment>
       <Form />
-      <Notes />
+      <EditableNote />
     </Fragment>
   );
 }

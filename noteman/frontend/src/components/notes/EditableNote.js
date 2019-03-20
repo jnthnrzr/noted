@@ -1,8 +1,8 @@
 // future replacement for Form.js
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { addNote, updateNote } from "../../actions/notesActions";
+import { addNote, deleteNote, getNotes, toggleEdit, updateNote } from "../../actions/notesActions";
 
 const labelStyle = {
   width: "100%",
@@ -23,8 +23,9 @@ const textareaStyle = {
   outline: "none",
 };
 
-const cardStyle = {
-  // maxWidth: "20rem",
+const dateString = (unixTimeStamp) => {
+  const date = new Date(unixTimeStamp);
+  return date.toDateString();
 };
 
 class EditableNote extends Component {
@@ -34,21 +35,29 @@ class EditableNote extends Component {
   };
 
   static defaultProps = {
-    note: {},
+    notes: [],
   };
 
   static propTypes = {
-    note: PropTypes.shape({
+    notes: PropTypes.arrayOf(
+      PropTypes.shape({
         id: PropTypes.number,
         owner: PropTypes.number,
         title: PropTypes.string,
         body: PropTypes.string,
         created_at: PropTypes.string,
         modified_at: PropTypes.string,
-      }),
-    addNote: PropTypes.func.isRequired,
+      })),
+    deleteNote: PropTypes.func.isRequired,
     updateNote: PropTypes.func.isRequired,
+    toggleEdit: PropTypes.func.isRequired,
+    getNotes: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    const { getNotes } = this.props;
+    getNotes();
+  }
 
   onChange = event => {
     this.setState({
@@ -56,25 +65,31 @@ class EditableNote extends Component {
     });
   };
 
+  handleEdit = id => {
+    const { toggleEdit } = this.props;
+    toggleEdit(id);
+  };
+
+  handleUpdate = id => {
+    const { title, body } = this.state;
+    const modified_at = new Date().toISOString();
+    const { updateNote } = this.props;
+    const note = { id, title, body, modified_at };
+    updateNote(note);
+    this.setState({
+      title: "",
+      body: "",
+    });
+  };
+
+  handleDelete = id => {
+    const { deleteNote } = this.props;
+    deleteNote(id);
+  };
+
   handleSubmit = event => {
     event.preventDefault();
-    const { title, body } = this.state;
-
-    const { note } = this.props;
-    if (note) {
-      const { updateNote } = this.props;
-      updateNote({
-        ...note,
-        title,
-        body,
-        modified_at: new Date().toISOString(),
-      });
-    } else {
-      const newNote = { title, body };
-      const { addNote } = this.props;
-      addNote(newNote);
-    }
-
+    console.log("handleSubmit");
     this.setState({
       title: "",
       body: "",
@@ -82,83 +97,93 @@ class EditableNote extends Component {
   };
 
   render() {
-    const { note } = this.props;
+    const { notes } = this.props;
     const { title, body } = this.state;
 
     return (
-      <div className="card card-body mt-4 mb-4">
-
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="title" style={labelStyle}>
-              <input
-                className="form-control"
-                style={inputStyle}
-                type="text"
-                name="title"
-                placeholder="Title"
-                onChange={this.onChange}
-                value={title}
-              />
-            </label>
+      <Fragment>
+        {notes.map(note => (
+          <div key={note.id} className="card card-body mt-4 mb-4">
+            <form onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                {note.editing ? (
+                  <label htmlFor="title" style={labelStyle}>
+                    <input
+                      className="form-control"
+                      style={inputStyle}
+                      type="text"
+                      name="title"
+                      placeholder="Note Title"
+                      onChange={this.onChange}
+                      value={title}
+                    />
+                  </label>
+                ) : note.title}
+              </div>
+              <div className="form-group">
+                {note.editing ? (
+                  <label htmlFor="body" style={labelStyle}>
+                    <textarea
+                      style={textareaStyle}
+                      className="form-control"
+                      name="body"
+                      placeholder="What's it about?"
+                      onChange={this.onChange}
+                      value={body}
+                    />
+                  </label>
+                ) : note.body}
+              </div>
+              <div className="form-group d-flex justify-content-around align-items-center">
+                <span className="">
+                  {`Created: ${dateString(note.created_at)}`}
+                </span>
+                <span className="">
+                  {`Edited: ${dateString(note.modified_at)}`}
+                </span>
+                {note.editing ? (
+                  <button
+                    onClick={this.handleUpdate.bind(this, note.id)}
+                    type="button"
+                    className="btn btn-success"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    onClick={this.handleEdit.bind(this, note.id)}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    Edit
+                  </button>
+                )}
+                <button
+                  onClick={this.handleDelete.bind(this, note.id)}
+                  type="button"
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="form-group">
-            <label htmlFor="body" style={labelStyle}>
-              <textarea
-                style={textareaStyle}
-                className="form-control"
-                name="body"
-                placeholder="Text"
-                onChange={this.onChange}
-                value={body}
-              />
-            </label>
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              {note ? "Update" : "Submit"}
-            </button>
-          </div>
-        </form>
-      </div>
+        ))}
+      </Fragment>
     );
-
-    // return (
-    //   <div className="card border-secondary mb-3" key={note.id} style={cardStyle}>
-    //     <form onSubmit={this.handleSubmit}>
-    //       <div className="form-group card-header">
-    //         <label htmlFor="title" style={labelStyle}>
-    //           <input
-    //             name="title"
-    //             className="form-control"
-    //             defaultValue={note.title}
-    //             style={inputStyle}
-    //           />
-    //         </label>
-    //       </div>
-    //       <div className="form-group card-body">
-    //         <label htmlFor="body" style={labelStyle}>
-    //           <textarea
-    //             name="body"
-    //             className="form-control"
-    //             defaultValue={note.body}
-    //             style={textareaStyle}
-    //           />
-    //         </label>
-    //       </div>
-    //       <div className="form-group">
-    //         <button type="submit" className="card-link btn btn-info btn-sm">
-    //           Submit
-    //         </button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // );
   }
 }
 
-const mapStateToProps = null;
+const mapStateToProps = state => ({
+  notes: state.notesReducer.notes,
+});
 
-const mapDispatchToProps = { addNote, updateNote };
+const mapDispatchToProps = {
+  addNote,
+  deleteNote,
+  getNotes,
+  toggleEdit,
+  updateNote,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableNote);
