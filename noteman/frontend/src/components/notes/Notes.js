@@ -127,6 +127,7 @@ class Notes extends Component {
                       style={textareaStyle}
                       className="form-control"
                       name="body"
+                      rows="4"
                       placeholder="What's it about?"
                       onChange={this.onChange}
                       defaultValue={note.body}
@@ -137,7 +138,7 @@ class Notes extends Component {
               <div className="form-group d-flex justify-content-between align-items-center">
                 <span>
                   <small>
-                    {`Created: ${dateString(note.created_at)}`}
+                    {`Modified: ${dateString(note.modified_at)}`}
                   </small>
                 </span>
                 <div style={{width: "50%"}} className="d-flex justify-content-end">

@@ -33,6 +33,12 @@ class Form extends Component {
     });
   };
 
+  autoGrow = () => {
+    const textarea = document.getElementById('body');
+    const { scrollHeight } = textarea;
+    textarea.style.height = `${scrollHeight}px`;
+  };
+
   render() {
     const { title, body } = this.state;
     const labelStyle = {
@@ -44,6 +50,7 @@ class Form extends Component {
     };
 
     const textareaStyle = {
+      overflow: "hidden",
       resize: "none",
       outline: "none",
       border: "none",
@@ -51,7 +58,7 @@ class Form extends Component {
 
     return (
       <div className="card card-body border-primary mt-4 mb-4">
-        <h4>Add Note</h4>
+        <h4 className="text-center">Add Note</h4>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="title" style={labelStyle}>
@@ -71,9 +78,14 @@ class Form extends Component {
               <textarea
                 style={textareaStyle}
                 className="form-control"
+                id="body"
                 name="body"
+                rows="4"
                 placeholder="Enter Text"
                 onChange={this.onChange}
+                onKeyUp={this.autoGrow}
+                onPaste={this.autoGrow}
+                onInput={this.autoGrow}
                 value={body}
               />
             </label>
