@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
+import moment from 'moment';
 import { deleteNote, getNotes, toggleEdit, updateNote } from "../../actions/notesActions";
 
 const deleteBtnStyle = {
@@ -23,11 +24,6 @@ const textareaStyle = {
   background: "inherit",
   resize: "none",
   outline: "none",
-};
-
-const dateString = (unixTimeStamp) => {
-  const date = new Date(unixTimeStamp);
-  return date.toDateString();
 };
 
 class Notes extends Component {
@@ -61,6 +57,15 @@ class Notes extends Component {
     getNotes();
   }
 
+  timeFromNow = date => moment(date).fromNow();
+
+  calendarTime = date => moment(date).calendar();
+
+  dateString = (unixTimeStamp) => {
+  const date = new Date(unixTimeStamp);
+  return this.timeFromNow(date);
+};
+
   onChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -75,7 +80,6 @@ class Notes extends Component {
   handleUpdate = note => {
     const { title, body } = this.state;
     const modified_at = new Date().toISOString();
-    // const note = { id, title, body, modified_at };
 
     const { updateNote } = this.props;
     updateNote({
@@ -118,7 +122,7 @@ class Notes extends Component {
                       defaultValue={note.title}
                     />
                   </label>
-                ) : note.title}
+                ) : <h4>{note.title}</h4>}
               </div>
               <div className="form-group">
                 {note.editing ? (
@@ -138,7 +142,9 @@ class Notes extends Component {
               <div className="form-group d-flex justify-content-between align-items-center">
                 <span>
                   <small>
-                    {`Modified: ${dateString(note.modified_at)}`}
+                    {`Created: ${this.calendarTime(note.created_at)}`}
+                    <br />
+                    {`Last edit: ${this.dateString(note.modified_at)}`}
                   </small>
                 </span>
                 <div style={{width: "50%"}} className="d-flex justify-content-end">
