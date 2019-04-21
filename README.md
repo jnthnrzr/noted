@@ -1,6 +1,7 @@
 # Noted
 
-A note-taking app built with Django and React. 
+A note-taking app with login authorization.  
+Users can create new notes, read, update, or delete saved ones once logged in.
 
 ## Secrets
 
@@ -33,6 +34,7 @@ DEBUG=<Django Debug Value>
     
     ```bash
     cd noteman
+    python manage.py migrate
     python manage.py runserver
     ```
 
