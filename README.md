@@ -1,7 +1,6 @@
 # Noted
 
-A note-taking app with login authorization.  
-Users can create new notes, read, update, or delete saved ones once logged in.
+A note-taking app with user registration and authentication. Users can create new notes or read saved ones once logged in.
 
 ## Secrets
 
@@ -13,30 +12,30 @@ DEBUG=<Django Debug Value>
 ## Installation
 
 1. Install frontend dependencies with npm
-    
-    ```bash
-    npm install
-    ```
+
+   ```bash
+   npm install
+   ```
 
 2. Run the dev server for the frontend
-    
-    ```bash
-    npm run dev
-    ```
+
+   ```bash
+   npm run dev
+   ```
 
 3. Install backend dependencies with pipenv from a terminal at project root
-    
-    ```bash
-    pipenv install
-    ```
+
+   ```bash
+   pipenv install
+   ```
 
 4. Run the Django server from a terminal at `noteman` directory
-    
-    ```bash
-    cd noteman
-    python manage.py migrate
-    python manage.py runserver
-    ```
+
+   ```bash
+   cd noteman
+   python manage.py migrate
+   python manage.py runserver
+   ```
 
 5. Open `http://localhost:8000/` in a browser to interact with the full stack app.
 
